@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-SpringBoot3Application<SpringBoot3>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.jpa.main.SpringBoot3Application",
+            "projectName": "SpringBoot3",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
