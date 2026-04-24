@@ -62,10 +62,16 @@ public class Patient {
     private BloodGroup bloodGroup;
 
     @OneToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
-    @JoinColumn(name = "patient_insurance_id")
+    @JoinColumn(name = "patient_insurance_id") // Join Column indicates owning side
     private Insurance insurance;
 
-    @OneToMany(mappedBy = "patient")
+    /*
+     * orphanRemoval : if Parent deleted its appoinment, it gets automatically
+     * deleted from db too
+     */
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @ToString.Exclude // can also use fetch = FetchType.EAGER, but we dont want to display the changes
+                      // even before session is over
     private List<Appoinment> appoinment;
 
     public Patient() {

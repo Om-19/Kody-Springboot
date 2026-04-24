@@ -1,6 +1,5 @@
 package com.jpa.main.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +18,13 @@ public class InsuranceService {
     private final InsuranceRepository insuranceRepository;
     private final PatientRepository patientRepository;
 
+    /*
+     * Transactional will only work when we haven given cascade in in parent class
+     * to its child
+     * then only it will save insurance first -> patient will add insurance _-
+     * patient in dirty state
+     * & at end of method all new changes will be committed in db.
+     */
     @Transactional
     public Patient assignInsuranceToPatient(Insurance insurance, Long patientId) {
         Patient patient = patientRepository.findById(patientId)
