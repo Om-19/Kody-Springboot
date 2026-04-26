@@ -1,6 +1,15 @@
 # Kody-Springboot
 SpringBoot Projects
+=====================================================================================================================
+public class RegexConstants {
 
+    public static final String NAME = "^[A-Za-z ]{2,50}$";
+    public static final String EMAIL = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+    public static final String PASSWORD = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).{8,20}$";
+    public static final String MOBILE = "^[6-9]\\d{9}$";
+
+}
+======================================================================================================================
 Github
 
 Here’s your **clean, no-confusion Git workflow** for working between your classroom PC and personal PC.
