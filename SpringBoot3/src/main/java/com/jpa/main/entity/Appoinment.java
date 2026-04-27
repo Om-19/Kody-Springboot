@@ -35,6 +35,10 @@ public class Appoinment {
     @Column(length = 500)
     private String reason;
 
+    /*
+    We dont give cascade to patient/doctor since we dont want them to be updated while creating appoinment
+    ex. if CascadeType.ALL used : it will delete the patient associated with it
+    */
     @ManyToOne
     @JoinColumn(name = "patient_id", nullable = false)
     private Patient patient;
