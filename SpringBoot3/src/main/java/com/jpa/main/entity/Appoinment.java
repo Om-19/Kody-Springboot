@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -36,14 +37,15 @@ public class Appoinment {
     private String reason;
 
     /*
-    We dont give cascade to patient/doctor since we dont want them to be updated while creating appoinment
-    ex. if CascadeType.ALL used : it will delete the patient associated with it
-    */
+     * We dont give cascade to patient/doctor since we dont want them to be updated
+     * while creating appoinment
+     * ex. if CascadeType.ALL used : it will delete the patient associated with it
+     */
     @ManyToOne
     @JoinColumn(name = "patient_id", nullable = false)
     private Patient patient;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
     private Doctor doctor;
 }

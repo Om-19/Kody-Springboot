@@ -10,8 +10,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.jpa.main.dto.BloodgroupCount;
 import com.jpa.main.entity.BloodGroup;
-import com.jpa.main.entity.BloodgroupCount;
 import com.jpa.main.entity.Patient;
 
 import jakarta.transaction.Transactional;
@@ -59,4 +59,16 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
     @Query("update Patient p SET p.name = :name where p.id = :id")
     int updatePatientWithId(@Param("name") String name, @Param("id") Long id);
 
+    /*
+     * Solution for FetchType.EAGER (N+1 Problem) on Appoinment List in Patient
+     * class
+     * if left join on appointment is not used on doctor
+     * it will lead to N+1 Problem on doctor in Appoinment class
+     */
+    // @Query("SELECT p from Patient p LEFT JOIN FETCH p.appoinments a LEFT JOIN
+    // FETCH a.doctor")
+    @Query("SELECT p FROM Patient p LEFT JOIN FETCH p.appoinments") // if FetchType.LAZY is used on Doctor,
+                                                                    // which is byDefault EAGER, this will fetch only
+                                                                    // appoinments & not lead to N+1 Problem on Doctor
+    List<Patient> findAllPatientsWithAppoList();
 }

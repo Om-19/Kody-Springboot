@@ -16,16 +16,17 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AppoinmentService {
 
-    private AppoinmentRepository appoinmentRepository;
-    private DoctorRepository doctorRepository;
-    private PatientRepository patientRepository;
+    private final AppoinmentRepository appoinmentRepository;
+    private final DoctorRepository doctorRepository;
+    private final PatientRepository patientRepository;
 
     /*
      * No need for cascading as we dont want to create/delete any new Patient/Doctor
      * Also Appoinment is manyToOne So generally this relationship has no need for
      * cascading
-     * But cascade will be required in Patient on list(appoinment) so that i spatien
-     * tgets removed
+     * But cascade will be required in Patient on list(appoinment) so that if
+     * patient
+     * gets removed
      * all appoinments hsould be deleted.
      */
     @Transactional
@@ -42,6 +43,16 @@ public class AppoinmentService {
         patient.getAppoinment().add(appoinment); // to maintain consistency
 
         return appoinmentRepository.save(appoinment);
+    }
 
+    @Transactional
+    public Appoinment assignAppoinmentToAnotherDoctor(Long appoinmentId, Long doctorId) {
+        Doctor doctor = doctorRepository.findById(doctorId).orElseThrow();
+        Appoinment appoinment = appoinmentRepository.findById(appoinmentId).orElseThrow();
+
+        appoinment.setDoctor(doctor); // this will automatically the update as appoinment will get dirty
+        doctor.getAppoinmentList().add(appoinment); // // for bi-directional consistency
+
+        return appoinment;
     }
 }

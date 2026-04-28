@@ -61,17 +61,22 @@ public class Patient {
     @Enumerated(EnumType.STRING)
     private BloodGroup bloodGroup;
 
-    @OneToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+    /*
+     * OrphanRemoval will insure if patient is deleted insurance also gets deleted
+     */
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "patient_insurance_id") // Join Column indicates owning side
     private Insurance insurance;
 
     /*
      * orphanRemoval : if Parent deleted its appoinment, it gets automatically
      * deleted from db too
+     * Also in oneToOne FetchType is EAGER
      */
     @OneToMany(mappedBy = "patient", cascade = CascadeType.REMOVE, orphanRemoval = true)
     @ToString.Exclude // can also use fetch = FetchType.EAGER, but we dont want to display the changes
                       // even before session is over
+                      // if GetchType.EAGER is used it will lead to N+1 Problem
     private List<Appoinment> appoinment;
 
     public Patient() {

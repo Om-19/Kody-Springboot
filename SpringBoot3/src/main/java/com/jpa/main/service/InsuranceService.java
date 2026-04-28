@@ -15,6 +15,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class InsuranceService {
 
+    /*
+     * In Spring Boot, @RequiredArgsConstructor is a Lombok annotation used to
+     * automatically generate a constructor
+     * for all final fields or fields marked with @NonNull. It is primarily used to
+     * simplify Constructor-Based Dependency Injection
+     */
     private final InsuranceRepository insuranceRepository;
     private final PatientRepository patientRepository;
 
@@ -32,6 +38,15 @@ public class InsuranceService {
 
         patient.setInsurance(insurance);
         insurance.setPatient(patient);
+
+        return patient;
+    }
+
+    @Transactional
+    public Patient disAssociateOInsurance(Long id) {
+        Patient patient = patientRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Patient Not Found with Id: " + id));
+        patient.setInsurance(null);
 
         return patient;
     }

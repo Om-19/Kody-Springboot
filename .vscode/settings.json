@@ -1,4 +1,11 @@
 {
     "java.configuration.updateBuildConfiguration": "interactive",
-    "java.compile.nullAnalysis.mode": "automatic"
+    "java.compile.nullAnalysis.mode": "automatic",
+    "files.autoSave": "onFocusChange",
+    "editor.formatOnSave": true,
+    "editor.tabSize": 4,
+    "spring-boot.ls.java.home": "",
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": "explicit"
+    }
 }

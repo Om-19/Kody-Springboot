@@ -1,6 +1,8 @@
 package com.jpa.main.entity;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.Column;
@@ -9,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,5 +40,9 @@ public class Doctor {
 
     @ManyToMany(mappedBy = "doctors")
     private Set<Department> set = new HashSet<>();
+
+    @OneToMany(mappedBy = "doctor")
+    @ToString.Exclude
+    private List<Appoinment> appoinmentList = new ArrayList<>();
 
 }

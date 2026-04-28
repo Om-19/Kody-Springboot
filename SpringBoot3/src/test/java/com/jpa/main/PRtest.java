@@ -14,9 +14,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
+import com.jpa.main.dto.PatientSummary;
 import com.jpa.main.entity.BloodGroup;
 import com.jpa.main.entity.Patient;
-import com.jpa.main.entity.PatientSummary;
 import com.jpa.main.repository.PRpract;
 
 @DataJpaTest

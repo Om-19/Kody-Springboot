@@ -1,5 +1,15 @@
 # Kody-Springboot
 SpringBoot Projects
+
+Alt + ← / →         → Navigate back/forward
+Ctrl + P            → Quick file search
+Ctrl + Shift + O    → Search method in file
+
+Ctrl + /            → Comment line
+Ctrl + Shift + K    → Delete line
+
+Ctrl + F5           → Run app
+
 =====================================================================================================================
 public class RegexConstants {
 

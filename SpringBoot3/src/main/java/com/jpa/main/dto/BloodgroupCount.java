@@ -1,4 +1,6 @@
-package com.jpa.main.entity;
+package com.jpa.main.dto;
+
+import com.jpa.main.entity.BloodGroup;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

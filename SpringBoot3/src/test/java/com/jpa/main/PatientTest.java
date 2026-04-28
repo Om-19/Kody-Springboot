@@ -15,8 +15,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
+import com.jpa.main.dto.BloodgroupCount;
 import com.jpa.main.entity.BloodGroup;
-import com.jpa.main.entity.BloodgroupCount;
 import com.jpa.main.entity.Patient;
 import com.jpa.main.repository.PatientRepository;
 
@@ -108,4 +108,5 @@ public class PatientTest {
     public void test10() {
         int rowsUpdated = patientRepository.updatePatientWithId("Arav Sharma", 1L);
     }
+
 }
