@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -43,6 +45,7 @@ public class Doctor {
 
     @OneToMany(mappedBy = "doctor")
     @ToString.Exclude
+    @JsonManagedReference("doctor-app")
     private List<Appoinment> appoinmentList = new ArrayList<>();
 
 }

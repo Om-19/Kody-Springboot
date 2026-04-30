@@ -15,7 +15,7 @@ public class CriteriaService {
     @Autowired
     PatientCriteriaQuery pq;
 
-    public List<Patient> getPatientFromCriteria(PatientSearchCriteria sc) {
+    public List<Patient> searchPatients(PatientSearchCriteria sc) {
         return pq.findPatientsBasics(sc);
     }
 }

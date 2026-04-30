@@ -2,6 +2,8 @@ package com.jpa.main.entity;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -43,9 +45,11 @@ public class Appoinment {
      */
     @ManyToOne
     @JoinColumn(name = "patient_id", nullable = false)
+    @JsonBackReference("patient-app")
     private Patient patient;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
+    @JsonBackReference("doctor-app")
     private Doctor doctor;
 }

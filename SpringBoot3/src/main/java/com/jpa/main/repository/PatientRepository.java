@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,7 +17,7 @@ import com.jpa.main.entity.Patient;
 
 import jakarta.transaction.Transactional;
 
-public interface PatientRepository extends JpaRepository<Patient, Long> {
+public interface PatientRepository extends JpaRepository<Patient, Long>, JpaSpecificationExecutor<Patient> {
     // findBy + attribute(in camelCase )
     Patient findByName(String name);
 
@@ -42,7 +43,7 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
     List<Patient> findByBornAfterDate(LocalDate birthDate);
 
     // Projection : Only Possible with JPQL & not with nativeQuery
-    @Query("Select new com.jpa.main.entity.BloodgroupCount(p.bloodGroup, Count(p)) From Patient p Group By p.bloodGroup")
+    @Query("Select new com.jpa.main.dto.BloodgroupCount(p.bloodGroup, Count(p)) From Patient p Group By p.bloodGroup")
     List<BloodgroupCount> countEachBloodGroupType();
     // List<Object[]> countEachBloodGroupType();
 
@@ -67,8 +68,8 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
      */
     // @Query("SELECT p from Patient p LEFT JOIN FETCH p.appoinments a LEFT JOIN
     // FETCH a.doctor")
-    @Query("SELECT p FROM Patient p LEFT JOIN FETCH p.appoinments") // if FetchType.LAZY is used on Doctor,
-                                                                    // which is byDefault EAGER, this will fetch only
-                                                                    // appoinments & not lead to N+1 Problem on Doctor
+    @Query("SELECT p FROM Patient p LEFT JOIN FETCH p.appoinment") // if FetchType.LAZY is used on Doctor,
+                                                                   // which is byDefault EAGER, this will fetch only
+                                                                   // appoinments & not lead to N+1 Problem on Doctor
     List<Patient> findAllPatientsWithAppoList();
 }

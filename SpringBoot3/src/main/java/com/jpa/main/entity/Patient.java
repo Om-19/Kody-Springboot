@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -66,6 +68,7 @@ public class Patient {
      */
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "patient_insurance_id") // Join Column indicates owning side
+    @JsonManagedReference(value = "patient-insurance")
     private Insurance insurance;
 
     /*
@@ -77,6 +80,7 @@ public class Patient {
     @ToString.Exclude // can also use fetch = FetchType.EAGER, but we dont want to display the changes
                       // even before session is over
                       // if GetchType.EAGER is used it will lead to N+1 Problem
+    @JsonManagedReference("patient-app")
     private List<Appoinment> appoinment;
 
     public Patient() {

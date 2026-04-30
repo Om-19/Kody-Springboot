@@ -76,7 +76,7 @@ public interface PRpract extends JpaRepository<Patient, Long> {
          * }
          */
         @Query("""
-                            SELECT new com.jpa.main.entity.PatientSummary(p.name, p.bloodGroup)
+                            SELECT new com.jpa.main.dto.PatientSummary(p.name, p.bloodGroup)
                             FROM Patient p
                         """)
         List<PatientSummary> findAllPatientSummaries();
