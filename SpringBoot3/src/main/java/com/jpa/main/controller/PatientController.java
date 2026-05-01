@@ -13,10 +13,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.jpa.main.dto.AppointmentDTO;
 import com.jpa.main.dto.PatientSearchCriteria;
 import com.jpa.main.entity.BloodGroup;
 import com.jpa.main.entity.Patient;
 import com.jpa.main.repository.PatientRepository;
+import com.jpa.main.service.AppoinmentService;
 import com.jpa.main.service.CriteriaService;
 import com.jpa.main.service.PatientService;
 import com.jpa.main.service.SpecificationService;
@@ -27,6 +29,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PatientController {
 
+    private final AppoinmentService appoinmentService;
     private final PatientService service;
     private final CriteriaService cService;
     private final SpecificationService specService;
@@ -77,4 +80,24 @@ public class PatientController {
     public List<Patient> searchPatients(@RequestBody PatientSearchCriteria sc) {
         return specService.searchPatients(sc);
     }
+
+    @GetMapping("/findAppoinmentWithEntityGraph")
+    public List<AppointmentDTO> findAppointmentWithEG() {
+        return appoinmentService.findWithEntityGraph();
+    }
+
+    @GetMapping("/findDtoLoadGraph")
+    public List<AppointmentDTO> getLoadgraphEx(@RequestParam String reason) {
+        if (reason == null || reason.isEmpty()) {
+            System.out.println("Reason is null or empty");
+            throw new IllegalArgumentException("Reason must be provided");
+        }
+        return appoinmentService.findByReason(reason);
+    }
+
+    @GetMapping("/findByFetchGraph")
+    public List<AppointmentDTO> getWithFetchGraph() {
+        return appoinmentService.findAllAppt();
+    }
+
 }

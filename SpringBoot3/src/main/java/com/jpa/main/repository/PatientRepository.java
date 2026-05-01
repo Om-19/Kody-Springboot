@@ -72,4 +72,5 @@ public interface PatientRepository extends JpaRepository<Patient, Long>, JpaSpec
                                                                    // which is byDefault EAGER, this will fetch only
                                                                    // appoinments & not lead to N+1 Problem on Doctor
     List<Patient> findAllPatientsWithAppoList();
+
 }

@@ -5,7 +5,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jpa.main.entity.Insurance;
 import com.jpa.main.entity.Patient;
-import com.jpa.main.repository.InsuranceRepository;
 import com.jpa.main.repository.PatientRepository;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -21,7 +20,7 @@ public class InsuranceService {
      * for all final fields or fields marked with @NonNull. It is primarily used to
      * simplify Constructor-Based Dependency Injection
      */
-    private final InsuranceRepository insuranceRepository;
+    // private final InsuranceRepository insuranceRepository;
     private final PatientRepository patientRepository;
 
     /*

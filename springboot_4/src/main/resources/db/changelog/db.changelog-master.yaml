@@ -1,0 +1,43 @@
+databaseChangeLog:
+  - changeSet:
+      id: fix-complaint-status-migration
+      author: you
+
+      changes:
+
+        # 1. Add new column
+        - addColumn:
+            tableName: complain
+            columns:
+              - column:
+                  name: status_new
+                  type: VARCHAR(30)
+
+        # 2. Migrate data (adjust based on your enum order)
+        - sql:
+            sql: |
+              UPDATE complain SET status_new = 'OPEN' WHERE status = 0;
+              UPDATE complain SET status_new = 'IN_PROGRESS' WHERE status = 1;
+              UPDATE complain SET status_new = 'RESOLVED' WHERE status = 2;
+              UPDATE complain SET status_new = 'REJECTED' WHERE status = 3;
+ 
+        # 3. Drop old column
+        - dropColumn:
+            tableName: complain
+            columnName: status
+
+        # 4. Rename column
+        - renameColumn:
+            tableName: complain
+            oldColumnName: status_new
+            newColumnName: status
+            columnDataType: VARCHAR(30)
+
+# ❌ Never trust direct type conversion in production
+# ✅ Always use expand → migrate → contract
+
+# Because:
+
+# Zero downtime
+# Safe deployments
+# No data corruption

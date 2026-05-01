@@ -41,7 +41,7 @@ public class Doctor {
     private String email;
 
     @ManyToMany(mappedBy = "doctors")
-    private Set<Department> set = new HashSet<>();
+    private Set<Department> departments = new HashSet<>();
 
     @OneToMany(mappedBy = "doctor")
     @ToString.Exclude
