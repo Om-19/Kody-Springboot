@@ -54,6 +54,10 @@ public class CrudController {
                 complain.getStatus(),
                 complain.getCreatedAt());
 
+        /*
+         * ResponseEntity allows us to control the complete HTTP response including
+         * status code, headers, and body, making APIs more flexible and REST-compliant.
+         */
         return new ResponseEntity<>(response, HttpStatus.CREATED);
 
     }
