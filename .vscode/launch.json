@@ -2,6 +2,19 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Springboot7Application",
+            "request": "launch",
+            "mainClass": "com.task.Springboot7Application"
+        },
+        {
+            "type": "java",
+            "name": "Demo",
+            "request": "launch",
+            "mainClass": "Demo",
+            "projectName": ""
+        },
+        {
+            "type": "java",
             "name": "Spring Boot-SpringBoot3Application<SpringBoot3>",
             "request": "launch",
             "cwd": "${workspaceFolder}",

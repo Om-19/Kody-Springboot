@@ -3,6 +3,9 @@ Kody - SpringBoot
 springboot_3 : Hospital Application (Mappings, criteria api)
 springboot_4 : Exception Handling
 springboot_5 : Blog Application
+springboot_6 : Employee Task
+springboot_7 : Product Task
+
 
 Rest Api Guidelines 
 1 Client server arch
