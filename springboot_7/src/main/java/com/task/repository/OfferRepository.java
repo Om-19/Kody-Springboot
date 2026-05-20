@@ -7,5 +7,5 @@ import com.task.entity.Offer;
 
 @Repository
 public interface OfferRepository extends JpaRepository<Offer, Long> {
-
+    boolean existsByOfferNameIgnoreCase(String offerName);
 }

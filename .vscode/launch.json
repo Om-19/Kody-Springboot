@@ -2,6 +2,19 @@
     "configurations": [
         {
             "type": "java",
+            "name": "LimitsServiceApplication",
+            "request": "launch",
+            "mainClass": "com.msu.app.limits_service.LimitsServiceApplication"
+        },
+        {
+            "type": "java",
+            "name": "OptionalDemo",
+            "request": "launch",
+            "mainClass": "OptionalDemo",
+            "projectName": ""
+        },
+        {
+            "type": "java",
             "name": "Springboot7Application",
             "request": "launch",
             "mainClass": "com.task.Springboot7Application"

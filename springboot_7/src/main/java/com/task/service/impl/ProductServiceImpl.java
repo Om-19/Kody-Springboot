@@ -12,6 +12,8 @@ import com.task.dto.request.Productrequest;
 import com.task.dto.response.Productresponse;
 import com.task.entity.Product;
 import com.task.exception.customExc.DuplicateResourceException;
+import com.task.exception.customExc.ProductAlreadyDeletedException;
+import com.task.exception.customExc.ResourceNotFound;
 import com.task.repository.ProductRepository;
 import com.task.service.ProductService;
 
@@ -91,8 +93,18 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void deleteProduct(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteProduct'");
+        Product product = productRepository
+                .findById(id)
+                .orElseThrow(() -> new ResourceNotFound("Product with id : " + id + " not found."));
+
+        // avoids NullPointerException
+        if (Boolean.FALSE.equals(product.getActive())) {
+            throw new ProductAlreadyDeletedException("Product is already deleted.");
+        }
+
+        product.setActive(false);
+
+        productRepository.save(product);
     }
 
     private Productresponse mapToResponse(Product product) {
