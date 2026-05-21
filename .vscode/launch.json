@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Springboot8Application",
+            "request": "launch",
+            "mainClass": "com.olp.Springboot8Application",
+            "projectName": "springboot_8"
+        },
+        {
+            "type": "java",
             "name": "LimitsServiceApplication",
             "request": "launch",
             "mainClass": "com.msu.app.limits_service.LimitsServiceApplication"
