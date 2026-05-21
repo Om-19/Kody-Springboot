@@ -2,7 +2,11 @@ package com.task.service.impl;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.task.dto.request.OfferRequestDto;
@@ -10,6 +14,7 @@ import com.task.dto.response.OfferResponseDto;
 import com.task.entity.Offer;
 import com.task.enums.OfferType;
 import com.task.exception.customExc.InvalidOfferException;
+import com.task.exception.customExc.ProductAlreadyDeletedException;
 import com.task.repository.OfferRepository;
 import com.task.service.OfferService;
 
@@ -96,6 +101,30 @@ public class OfferServiceImpl implements OfferService {
                 .createdDate(offer.getCreatedDate())
                 .updatedDate(offer.getUpdatedDate())
                 .build();
+    }
+
+    @Override
+    public void deleteOffer(Long id) {
+        Offer offer = offerRepository
+                .findById(id)
+                .orElseThrow(() -> new InvalidOfferException("Offer with id : " + id + " not found."));
+
+        // avoids NullPointerException
+        if (Boolean.FALSE.equals(offer.getActive())) {
+            throw new ProductAlreadyDeletedException("Offer is already deleted.");
+        }
+
+        offer.setActive(false);
+        offerRepository.save(offer);
+    }
+
+    @Override
+    public Page<OfferResponseDto> getAllOffers(int page) {
+        Pageable pageable = PageRequest.of(page, 5);
+
+        Page<Offer> offerPage = offerRepository.findAll(pageable);
+
+        return offerPage.map(this::mapToResponse);
     }
 
 }

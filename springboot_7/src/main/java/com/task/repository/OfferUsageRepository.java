@@ -1,16 +1,16 @@
 package com.task.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-
-import com.task.entity.Offer;
-import com.task.entity.OfferUsage;
-
 import java.util.Optional;
 
-public interface OfferUsageRepository
-        extends JpaRepository<OfferUsage, Long> {
+import org.springframework.data.jpa.repository.JpaRepository;
 
-    Optional<OfferUsage> findByCustomerEmailAndOffer(
-            String customerEmail,
-            Offer offer);
+import com.task.entity.OfferUsage;
+
+public interface OfferUsageRepository
+                extends JpaRepository<OfferUsage, Long> {
+
+        // How many times has THIS customer used THIS offer?
+        Optional<OfferUsage> findByCustomerEmailAndOffer_offerId(
+                        String customerEmail,
+                        Long offerId);
 }

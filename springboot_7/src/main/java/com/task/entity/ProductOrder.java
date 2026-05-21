@@ -3,6 +3,8 @@ package com.task.entity;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,6 +21,7 @@ public class ProductOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productOrderId;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "order_id")
     private CustomerOrder customerOrder;
@@ -36,6 +39,7 @@ public class ProductOrder {
 
     private BigDecimal finalPrice;
 
+    @Column(nullable = false, updatable = false)
     private LocalDateTime createdDate;
 
     @PrePersist

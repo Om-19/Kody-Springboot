@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.task.dto.response.ApiErrorResponse;
 import com.task.exception.customExc.DuplicateResourceException;
 import com.task.exception.customExc.InvalidOfferException;
+import com.task.exception.customExc.InvalidOrderException;
 import com.task.exception.customExc.ProductAlreadyDeletedException;
 import com.task.exception.customExc.ResourceNotFound;
 import com.task.exception.customExc.ValidationErrorResponse;
@@ -155,6 +156,23 @@ public class GlobalExceptionHandler {
                                 .timeStamp(LocalDateTime.now())
                                 .statusCode(HttpStatus.BAD_REQUEST.value())
                                 .error("INVALID OFFER")
+                                .message(ex.getMessage())
+                                .build();
+
+                return new ResponseEntity<>(
+                                error,
+                                HttpStatus.BAD_REQUEST);
+        }
+
+        /*
+         * Invalid Order Exception
+         */
+        @ExceptionHandler(InvalidOrderException.class)
+        public ResponseEntity<ApiErrorResponse> handleInvalidOrder(InvalidOrderException ex) {
+                ApiErrorResponse error = ApiErrorResponse.builder()
+                                .timeStamp(LocalDateTime.now())
+                                .statusCode(HttpStatus.BAD_REQUEST.value())
+                                .error("INVALID ORDER")
                                 .message(ex.getMessage())
                                 .build();
 
