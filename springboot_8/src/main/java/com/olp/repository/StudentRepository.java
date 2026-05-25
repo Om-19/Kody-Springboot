@@ -10,4 +10,6 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
     // Prevents NullPointerException.
     Optional<Student> findByEmail(String email);
+
+    boolean existsByEmail(String email);
 }

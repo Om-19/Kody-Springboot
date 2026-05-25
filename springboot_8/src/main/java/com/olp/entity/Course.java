@@ -18,6 +18,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,6 +28,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Course {
 
     @Id
@@ -35,6 +37,10 @@ public class Course {
 
     @NotBlank // because null + empty spaces both invalid.
     private String name;
+
+    @NotBlank
+    @Size(min = 5, max = 5)
+    private String subjectCode;
 
     @NotNull
     @Size(min = 10, max = 500, message = "Description must be between 10 and 500 characters")

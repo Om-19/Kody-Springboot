@@ -37,4 +37,6 @@ public class Institution {
 
     @OneToMany(mappedBy = "institution")
     private List<Course> courses;
+
+    // In OneToMany, Foreign key is stored in:, Many side table
 }

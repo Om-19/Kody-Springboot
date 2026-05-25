@@ -83,3 +83,11 @@ Best Mental Model
 Feature	Uses
 BCrypt	password security
 JWT Secret	token security
+
+
+| Mapping    | FK Stored In   |
+| ---------- | -------------- |
+| OneToMany  | Many side      |
+| ManyToOne  | Current entity |
+| OneToOne   | Owning side    |
+| ManyToMany | Join table     |
