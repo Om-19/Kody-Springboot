@@ -61,4 +61,16 @@ public class Course {
     @OneToMany(mappedBy = "course")
     private List<Enrollment> enrollments;
 
+    /*
+     * MppedBy =
+     * "Do NOT create another foreign key.
+     * Relationship is already managed by Storage.course"
+     * 
+     * WITHOUT mappedBy
+     * Hibernate creates:
+     * extra join table
+     */
+    @OneToMany(mappedBy = "course")
+    private List<Storage> storages;
+
 }

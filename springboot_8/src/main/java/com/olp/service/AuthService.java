@@ -21,6 +21,7 @@ public class AuthService {
     private final JwtUtil jwtUtil;
 
     public Student register(RegisterRequest request) {
+
         Student student = Student.builder()
                 .name(request.getName())
                 .email(request.getEmail())
@@ -34,7 +35,6 @@ public class AuthService {
     public AuthResponse login(LoginRequest request) {
 
         Student student = studentRepository.findByEmail(request.getEmail())
-
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         boolean matches = passwordEncoder.matches(

@@ -37,16 +37,12 @@ public class JwtUtil {
     public String generateToken(String email) {
 
         return Jwts.builder()
-
                 .setSubject(email)
-
                 .setIssuedAt(new Date())
-
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
-
                 .signWith(getSignKey(), SignatureAlgorithm.HS256)
-
                 .compact();
+
     }
 
     /*
@@ -54,27 +50,21 @@ public class JwtUtil {
      * Also checks if the token is expired.
      */
     public String extractEmail(String token) {
-
         return extractClaim(token, Claims::getSubject);
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> resolver) {
 
         Claims claims = extractAllClaims(token);
-
         return resolver.apply(claims);
     }
 
     private Claims extractAllClaims(String token) {
 
         return Jwts.parserBuilder()
-
                 .setSigningKey(getSignKey())
-
                 .build()
-
                 .parseClaimsJws(token)
-
                 .getBody();
     }
 

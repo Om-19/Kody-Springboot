@@ -83,3 +83,8 @@ Best Mental Model
 Feature	Uses
 BCrypt	password security
 JWT Secret	token security
+
+
+Mapping Type	Meaning
+Uni-directional	only one entity can navigate
+Bi-directional	both entities can navigate

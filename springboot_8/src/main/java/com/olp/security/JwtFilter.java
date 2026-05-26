@@ -20,67 +20,60 @@ import lombok.RequiredArgsConstructor;
 
 public class JwtFilter extends OncePerRequestFilter {
 
-    private final JwtUtil jwtUtil;
+        private final JwtUtil jwtUtil;
 
-    private final CustomUserDetailsService userDetailsService;
+        private final CustomUserDetailsService userDetailsService;
 
-    @Override
-    protected void doFilterInternal(
+        @Override
+        protected void doFilterInternal(
 
-            HttpServletRequest request,
+                        HttpServletRequest request,
 
-            HttpServletResponse response,
+                        HttpServletResponse response,
 
-            FilterChain filterChain
+                        FilterChain filterChain
 
-    ) throws ServletException, IOException {
+        ) throws ServletException, IOException {
 
-        final String authHeader = request.getHeader("Authorization");
+                final String authHeader = request.getHeader("Authorization");
 
-        String token = null;
+                String token = null;
 
-        String email = null;
+                String email = null;
 
-        // Check Bearer token
+                // Check Bearer token
+                if (authHeader != null && authHeader.startsWith("Bearer ")) {
 
-        if (authHeader != null &&
-                authHeader.startsWith("Bearer ")) {
+                        token = authHeader.substring(7);
 
-            token = authHeader.substring(7);
+                        email = jwtUtil.extractEmail(token);
+                }
 
-            email = jwtUtil.extractEmail(token);
+                // Authenticate user
+                if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+
+                        UserDetails userDetails = userDetailsService
+                                        .loadUserByUsername(email);
+
+                        if (jwtUtil.validateToken(
+                                        token,
+                                        userDetails.getUsername())) {
+
+                                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                                                userDetails,
+                                                null,
+                                                userDetails.getAuthorities());
+
+                                authToken.setDetails(
+                                                new WebAuthenticationDetailsSource()
+                                                                .buildDetails(request));
+
+                                SecurityContextHolder
+                                                .getContext()
+                                                .setAuthentication(authToken);
+                        }
+                }
+
+                filterChain.doFilter(request, response);
         }
-
-        // Authenticate user
-
-        if (email != null &&
-                SecurityContextHolder.getContext()
-                        .getAuthentication() == null) {
-
-            UserDetails userDetails = userDetailsService
-                    .loadUserByUsername(email);
-
-            if (jwtUtil.validateToken(
-                    token,
-                    userDetails.getUsername())) {
-
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-
-                        userDetails,
-                        null,
-                        userDetails.getAuthorities());
-
-                authToken.setDetails(
-
-                        new WebAuthenticationDetailsSource()
-                                .buildDetails(request));
-
-                SecurityContextHolder
-                        .getContext()
-                        .setAuthentication(authToken);
-            }
-        }
-
-        filterChain.doFilter(request, response);
-    }
 }

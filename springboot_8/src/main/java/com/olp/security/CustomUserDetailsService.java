@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-
 public class CustomUserDetailsService implements UserDetailsService {
 
         private final StudentRepository studentRepository;
@@ -22,18 +21,23 @@ public class CustomUserDetailsService implements UserDetailsService {
         public UserDetails loadUserByUsername(String email)
                         throws UsernameNotFoundException {
 
-                Student student = studentRepository.findByEmail(email)
+                System.out.println("METHOD CALLED");
 
-                                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+                Student student = studentRepository.findByEmail(email)
+                                .orElse(null);
+
+                System.out.println(student);
+
+                if (student == null) {
+                        throw new UsernameNotFoundException("User not found");
+                }
+
+                System.out.println(student.getRole());
 
                 return User.builder()
-
                                 .username(student.getEmail())
-
                                 .password(student.getPassword())
-
                                 .roles(student.getRole().name())
-
                                 .build();
         }
 }

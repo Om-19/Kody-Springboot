@@ -5,11 +5,20 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import lombok.RequiredArgsConstructor;
 
 @Configuration
+@RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final JwtFilter jwtFilter;
+
+    private final CustomUserDetailsService customUserDetailsService;
 
     // Spring creates and manages this object.
     // anywhere it is @Autowired Spring injects it automatically
@@ -39,7 +48,10 @@ public class SecurityConfig {
                         .hasRole("ADMIN")
 
                         .anyRequest()
-                        .authenticated());
+                        .authenticated())
+                .addFilterBefore(
+                        jwtFilter,
+                        UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -49,5 +61,10 @@ public class SecurityConfig {
             AuthenticationConfiguration config) throws Exception {
 
         return config.getAuthenticationManager();
+    }
+
+    @Bean
+    UserDetailsService userDetailsService() {
+        return customUserDetailsService;
     }
 }
