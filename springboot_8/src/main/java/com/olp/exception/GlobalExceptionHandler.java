@@ -8,6 +8,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.olp.exception.customExc.EntityAlreadyExistException;
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -33,6 +35,20 @@ public class GlobalExceptionHandler {
                 .timeStamp(LocalDateTime.now())
                 .statusCode(HttpStatus.NOT_FOUND.value())
                 .error("NOT FOUND")
+                .message("USername Not Found.")
+                .build()
+
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND)
+
+    }
+
+    @ExceptionHandler(EntityAlreadyExistException.class)
+    public ResponseEntity<ApiErrorResponse> handleUserAlreadyExist(EntityAlreadyExistException ex) {
+
+        ApiErrorResponse error = ApiErrorResponse.builder()
+                .timeStamp(LocalDateTime.now())
+                .statusCode(HttpStatus.ALREADY_REPORTED.value())
+                .error("MAIL ALREADY EXIST")
                 .message(ex.getMessage())
                 .build();
 

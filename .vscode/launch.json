@@ -4,6 +4,12 @@
             "type": "java",
             "name": "Springboot8Application",
             "request": "launch",
+            "mainClass": "com.olp.Springboot8Application"
+        },
+        {
+            "type": "java",
+            "name": "Springboot8Application",
+            "request": "launch",
             "mainClass": "com.olp.Springboot8Application",
             "projectName": "springboot_8"
         },

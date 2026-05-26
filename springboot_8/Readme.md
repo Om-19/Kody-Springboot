@@ -88,3 +88,9 @@ JWT Secret	token security
 Mapping Type	Meaning
 Uni-directional	only one entity can navigate
 Bi-directional	both entities can navigate
+| Mapping    | FK Stored In   |
+| ---------- | -------------- |
+| OneToMany  | Many side      |
+| ManyToOne  | Current entity |
+| OneToOne   | Owning side    |
+| ManyToMany | Join table     |
