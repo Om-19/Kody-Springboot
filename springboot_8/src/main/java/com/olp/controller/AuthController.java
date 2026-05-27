@@ -25,25 +25,22 @@ public class AuthController {
 
     @PostMapping("/registerStudent")
     public Student registerAsStudent(@RequestBody RegisterRequest request) {
-
         return authService.registerStudent(request);
     }
 
     @PostMapping("/registerInstructor")
     public Instructor registerAsInstructor(@RequestBody RegisterReqInstructor request) {
-
         return authService.registerInstructor(request);
     }
 
     @PostMapping("/loginStudent")
     public AuthResponse login(@RequestBody LoginRequest request) {
-
         return authService.login(request);
     }
 
     @PostMapping("/loginInstructor")
     public AuthResponse loginInstructor(@RequestBody LoginRequest request) {
-
         return authService.loginAsInstructor(request);
     }
+
 }

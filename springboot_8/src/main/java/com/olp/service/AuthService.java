@@ -10,19 +10,19 @@ import com.olp.dto.response.AuthResponse;
 import com.olp.entity.Instructor;
 import com.olp.entity.Student;
 import com.olp.exception.customExc.EntityAlreadyExistException;
-import com.olp.repository.InstitutionRepository;
 import com.olp.repository.InstructorRepository;
 import com.olp.repository.StudentRepository;
 import com.olp.security.JwtUtil;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AuthService {
 
-    private final InstitutionRepository institutionRepository;
     private final StudentRepository studentRepository;
     private final InstructorRepository instructorRepository;
     private final BCryptPasswordEncoder passwordEncoder;
@@ -45,7 +45,7 @@ public class AuthService {
         if (studentRepository.existsByEmail(request.getEmail()) == true) {
             throw new EntityAlreadyExistException("Student With this mail already exist.");
         }
-
+        log.info("Student Register Method");
         return studentRepository.save(student);
     }
 

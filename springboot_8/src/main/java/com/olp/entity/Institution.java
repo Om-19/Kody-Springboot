@@ -1,6 +1,7 @@
 package com.olp.entity;
 
 import java.util.List;
+import java.util.Set;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -33,7 +34,7 @@ public class Institution {
     private String website;
 
     @OneToMany(mappedBy = "institution")
-    private List<Instructor> instructors;
+    private Set<Instructor> instructors;
 
     @OneToMany(mappedBy = "institution")
     private List<Course> courses;

@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ReviewDto {
 
-    // @NotBlank
     @Min(1)
     @Max(5)
     private int rating;

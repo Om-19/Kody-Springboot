@@ -2,6 +2,7 @@ package com.olp.entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.olp.entity.enums.Role;
 
 import jakarta.persistence.Entity;
@@ -54,6 +55,7 @@ public class Instructor {
 
     // Instructor has many courses
     @OneToMany(mappedBy = "instructor") // The relationship is already managed by the instructor field inside Course
+    @JsonManagedReference
     private List<Course> courses;
 
 }

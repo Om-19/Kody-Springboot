@@ -2,6 +2,12 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Pract",
+            "request": "launch",
+            "mainClass": "Pract"
+        },
+        {
+            "type": "java",
             "name": "Springboot8Application",
             "request": "launch",
             "mainClass": "com.olp.Springboot8Application"

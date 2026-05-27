@@ -11,6 +11,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.olp.dto.response.GenericResponse;
 import com.olp.exception.customExc.EntityAlreadyExistException;
 
 @ControllerAdvice
@@ -73,23 +74,25 @@ public class GlobalExceptionHandler {
                                                         error.getDefaultMessage());
                                 });
 
-                return new ResponseEntity<>(
-                                errors,
-                                HttpStatus.INTERNAL_SERVER_ERROR);
+                GenericResponse<?> response = GenericResponse.builder()
+                                .statusCode(400)
+                                .message("Validation Failed")
+                                .data(errors)
+                                .build();
+
+                return ResponseEntity
+                                .badRequest()
+                                .body(response);
+
         }
 
         @ExceptionHandler(RuntimeException.class)
-
-        public ResponseEntity<?> handleRuntimeException(
-
-                        RuntimeException ex) {
+        public ResponseEntity<?> handleRuntimeException(RuntimeException ex) {
 
                 Map<String, Object> error = new HashMap<>();
 
                 error.put("timestamp", LocalDateTime.now());
-
                 error.put("message", ex.getMessage());
-
                 error.put("status", 400);
 
                 return new ResponseEntity<>(

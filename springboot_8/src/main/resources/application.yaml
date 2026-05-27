@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: springboot_8
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/springboot88
+    username: postgres
+    password: root
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+    show-sql: true
+
+    defer-datasource-initialization: false
+
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  sql:
+    init:
+      mode: never
+
+server:
+  port: 8080
+
+# Security
+jwt:
+  secret: VGhpc0lzQVN1cGVyU2VjdXJlSldUU2VjcmV0S2V5Rm9yU3ByaW5nQm9vdDM=
+  expiration: 86400000

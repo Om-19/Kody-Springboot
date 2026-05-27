@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import com.olp.dto.response.EnrollmentResponseDto;
 import com.olp.entity.Course;
 import com.olp.entity.Enrollment;
 import com.olp.entity.Student;
@@ -19,49 +20,85 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class EnrollmentServiceImpl {
 
-    private final EnrollmentRepository enrollmentRepository;
-    private final StudentRepository studentRepository;
-    private final CoursesRepository coursesRepository;
+        private final EnrollmentRepository enrollmentRepository;
+        private final StudentRepository studentRepository;
+        private final CoursesRepository coursesRepository;
 
-    public String enrollCourse(Long courseId, Authentication authentication) {
+        public String enrollCourse(Long courseId, Authentication authentication) {
 
-        // Get logged in user
-        String email = authentication.getName();
-        Student student = studentRepository
-                .findByEmail(email)
-                .orElseThrow(() -> new RuntimeException(
-                        "Student not found"));
+                // Get logged in user
+                String email = authentication.getName();
+                Student student = studentRepository
+                                .findByEmail(email)
+                                .orElseThrow(() -> new RuntimeException(
+                                                "Student not found"));
 
-        // Fetch Course
-        Course course = coursesRepository
-                .findById(courseId)
-                .orElseThrow(() -> new RuntimeException(
-                        "Course not found"));
+                // Fetch Course
+                Course course = coursesRepository
+                                .findById(courseId)
+                                .orElseThrow(() -> new RuntimeException(
+                                                "Course not found"));
 
-        // Check Already Enrolled
-        boolean alreadyEnrolled = enrollmentRepository
-                .findByStudentIdAndCourseId(
-                        student.getId(),
-                        course.getId())
-                .isPresent();
+                // Check Already Enrolled
+                boolean alreadyEnrolled = enrollmentRepository
+                                .existsByStudentIdAndCourseId(
+                                                student.getId(),
+                                                course.getId());
 
-        if (alreadyEnrolled) {
+                if (alreadyEnrolled) {
 
-            throw new RuntimeException(
-                    "Already enrolled in course");
+                        throw new RuntimeException(
+                                        "Already enrolled in course");
+                }
+                Enrollment enrollment = Enrollment.builder()
+                                .student(student)
+                                .course(course)
+                                .status(
+                                                EnrollmentStatus.ACTIVE)
+                                .enrolledAt(
+                                                LocalDateTime.now())
+                                .build();
+
+                enrollmentRepository.save(enrollment);
+
+                return "Course enrolled successfully";
         }
-        Enrollment enrollment = Enrollment.builder()
-                .student(student)
-                .course(course)
-                .status(
-                        EnrollmentStatus.ACTIVE)
-                .enrolledAt(
-                        LocalDateTime.now())
-                .build();
 
-        enrollmentRepository.save(enrollment);
+        public EnrollmentResponseDto updateStatus(
+                        Long courseID,
+                        Authentication authentication,
+                        EnrollmentStatus status) {
 
-        return "Course enrolled successfully";
-    }
+                // Get logged in user
+                String email = authentication.getName();
+
+                Student student = studentRepository
+                                .findByEmail(email)
+                                .orElseThrow(() -> new RuntimeException("Student not found"));
+
+                // Fetch Course
+                Course course = coursesRepository
+                                .findById(courseID)
+                                .orElseThrow(() -> new RuntimeException("Course not found"));
+
+                // Fetch Enrollment
+                Enrollment enrollment = enrollmentRepository
+                                .findByStudentIdAndCourseId(
+                                                student.getId(),
+                                                course.getId())
+                                .orElseThrow(() -> new RuntimeException(
+                                                "You are not enrolled in this course"));
+
+                // Update Status
+                enrollment.setStatus(status);
+
+                enrollmentRepository.save(enrollment);
+
+                return EnrollmentResponseDto.builder()
+                                .courseName(course.getName())
+                                .status(enrollment.getStatus())
+                                .build();
+
+        }
 
 }
