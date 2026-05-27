@@ -12,4 +12,5 @@ public class StudentController {
     public String studentApi() {
         return "Student APi";
     }
+
 }

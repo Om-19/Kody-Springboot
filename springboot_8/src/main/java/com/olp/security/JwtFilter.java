@@ -17,35 +17,25 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-
 public class JwtFilter extends OncePerRequestFilter {
 
         private final JwtUtil jwtUtil;
-
         private final CustomUserDetailsService userDetailsService;
 
         @Override
         protected void doFilterInternal(
-
                         HttpServletRequest request,
-
                         HttpServletResponse response,
-
-                        FilterChain filterChain
-
-        ) throws ServletException, IOException {
+                        FilterChain filterChain) throws ServletException, IOException {
 
                 final String authHeader = request.getHeader("Authorization");
 
                 String token = null;
-
                 String email = null;
 
                 // Check Bearer token
                 if (authHeader != null && authHeader.startsWith("Bearer ")) {
-
                         token = authHeader.substring(7);
-
                         email = jwtUtil.extractEmail(token);
                 }
 

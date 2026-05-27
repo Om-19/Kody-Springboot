@@ -1,43 +1,70 @@
 package com.olp.security;
 
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.security.core.userdetails.User;
 
+import com.olp.entity.Instructor;
 import com.olp.entity.Student;
+import com.olp.repository.InstructorRepository;
 import com.olp.repository.StudentRepository;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class CustomUserDetailsService implements UserDetailsService {
+
+public class CustomUserDetailsService
+                implements UserDetailsService {
 
         private final StudentRepository studentRepository;
+
+        private final InstructorRepository instructorRepository;
 
         @Override
         public UserDetails loadUserByUsername(String email)
                         throws UsernameNotFoundException {
 
-                System.out.println("METHOD CALLED");
+                // =========================
+                // CHECK STUDENT
+                // =========================
 
-                Student student = studentRepository.findByEmail(email)
+                Student student = studentRepository
+                                .findByEmail(email)
                                 .orElse(null);
 
-                System.out.println(student);
+                if (student != null) {
 
-                if (student == null) {
-                        throw new UsernameNotFoundException("User not found");
+                        return User.builder()
+                                        .username(student.getEmail())
+                                        .password(student.getPassword())
+                                        .roles(student.getRole().name())
+                                        .build();
                 }
 
-                System.out.println(student.getRole());
+                // =========================
+                // CHECK INSTRUCTOR
+                // =========================
 
-                return User.builder()
-                                .username(student.getEmail())
-                                .password(student.getPassword())
-                                .roles(student.getRole().name())
-                                .build();
+                Instructor instructor = instructorRepository
+                                .findByEmail(email)
+                                .orElse(null);
+
+                if (instructor != null) {
+                        return User.builder()
+                                        .username(instructor.getEmail())
+                                        .password(instructor.getPassword())
+                                        .roles(instructor.getRole().name())
+                                        .build();
+                }
+
+                // =========================
+                // USER NOT FOUND
+                // =========================
+
+                throw new UsernameNotFoundException(
+                                "User not found");
         }
 }

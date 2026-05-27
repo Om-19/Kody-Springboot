@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -17,7 +18,6 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
-
     private final CustomUserDetailsService customUserDetailsService;
 
     // Spring creates and manages this object.
@@ -27,11 +27,19 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    /*
+     * In Spring Security 6 with Spring Boot 3, SecurityFilterChain bean
+     * automatically enables web security, so @EnableWebSecurity is optional.
+     */
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
                 .csrf(csrf -> csrf.disable())
+
+                // Do NOT create or use HTTP sessions for authentication.
+                // Bcs By default, Spring Security uses session-based authentication.
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
                 .authorizeHttpRequests(auth -> auth
 
@@ -49,6 +57,7 @@ public class SecurityConfig {
 
                         .anyRequest()
                         .authenticated())
+
                 .addFilterBefore(
                         jwtFilter,
                         UsernamePasswordAuthenticationFilter.class);

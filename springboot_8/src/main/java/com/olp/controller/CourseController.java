@@ -8,17 +8,21 @@ import org.springframework.web.bind.annotation.RestController;
 import com.olp.dto.request.CourseDto;
 import com.olp.service.CourseServiceImpl;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/instructor/courses")
+@RequestMapping("instructor/courses")
 @RequiredArgsConstructor
 public class CourseController {
 
     private final CourseServiceImpl courseServiceImpl;
 
+    /*
+     * If instructor id is not given, it will take it through SecurityContext
+     */
     @PostMapping("/create")
-    public String createCourse(@RequestBody CourseDto entity) {
+    public String createCourse(@Valid @RequestBody CourseDto entity) {
         return courseServiceImpl.saveCourse(entity);
     }
 
